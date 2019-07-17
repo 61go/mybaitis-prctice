@@ -1,0 +1,46 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my61.mybatis.mybatisplus.mapper.UserMapper">
+<!--    <resultMap id="BaseResultMap" type="User" autoMapping="true">-->
+<!--        <id property="id" column="uid" />-->
+<!--        <result property="username" column="username" />-->
+<!--        <result property="password" column="password"/>-->
+<!--        <result property="address" column="address"/>-->
+<!--        <result property="createTime" column="createTime"/>-->
+<!--        <result property="updateTime" column="updateTime"/>-->
+<!--        <constructor>-->
+<!--            <idArg></idArg>-->
+<!--            <arg></arg>-->
+<!--            <arg></arg>-->
+<!--        </constructor>-->
+<!--        <collection property="campanyEntity" fetchType="lazy"  resultMap="dao.daoInterface.CampanyDao.CampanyMap" />-->
+<!--    </resultMap>-->
+
+    <!-- 可以将sql语句独立出来，然后引用 -->
+    <sql id="COLUMN_SQL">
+        u.id, u.name ,u.age,u.sex,u.price
+    </sql>
+    <select id="getAll" parameterType="int" resultType="User">
+
+        SELECT <include refid="COLUMN_SQL"/>
+        FROM  user u
+        <where>
+        <if test="id!=null">
+        id=#{id}
+        </if>
+        and
+         <if test=" age &lt; 30 ">
+         age>17
+         </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <!-- 根据id查询用户 -->
+    <insert id="insert"  keyProperty="id" keyColumn="id" useGeneratedKeys="true" timeout="2">
+
+        insert into user (id,name,age,sex,price) values (#{id},#{name},#{age},#{sex},#{price})
+    </insert>
+
+
+
+</mapper>
